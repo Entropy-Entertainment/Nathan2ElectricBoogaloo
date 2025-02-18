@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "nathan",
+  "version": "${version}",
+  "name": "Nathan",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/nathan/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.entropyentertainment.nathan.client.NathanClient"
+    ],
+    "main": [
+      "net.entropyentertainment.nathan.Nathan"
+    ]
+  },
+  "mixins": [
+    "nathan.mixins.json",
+    {
+      "config": "nathan.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
