@@ -112,3 +112,10 @@ publishing {
         // retrieving dependencies.
     }
 }
+
+// Fabric API config
+fabricApi {
+    configureDataGeneration() {
+        client = true
+    }
+}
