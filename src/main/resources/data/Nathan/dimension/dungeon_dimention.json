@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:overworld",
+  "generator": {
+    "type": "nathan:dungeongenerator",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "nathan:dungeon_biome"
+    },
+    "settings": "minecraft:overworld"
+  }
+}

@@ -1,10 +1,12 @@
 package generation;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ChunkRegion;
@@ -13,6 +15,7 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.source.BiomeAccess;
+import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.FixedBiomeSource;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
@@ -24,11 +27,12 @@ import java.util.concurrent.CompletableFuture;
 
 public class DungeonChunkGenerator extends ChunkGenerator {
 
-    public static final MapCodec<DungeonChunkGenerator> CODEC = RecordCodecBuilder.mapCodec((instance) ->
-            instance.group(RegistryOps.getEntryCodec(BiomeKeys.PLAINS)).apply(instance, instance.stable(DungeonChunkGenerator::new)));
+    public static final MapCodec<DungeonChunkGenerator> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
+            BiomeSource.CODEC.fieldOf("biome_source").forGetter(DungeonChunkGenerator::getBiomeSource)
+            ).apply(instance, instance.stable(DungeonChunkGenerator::new)));
 
-    public DungeonChunkGenerator(RegistryEntry.Reference<Biome> biomeEntry) {
-        super(new FixedBiomeSource(biomeEntry));
+    public DungeonChunkGenerator(BiomeSource biomeSource) {
+        super(biomeSource);
     }
 
     @Override
@@ -43,19 +47,6 @@ public class DungeonChunkGenerator extends ChunkGenerator {
 
     @Override
     public void buildSurface(ChunkRegion region, StructureAccessor structures, NoiseConfig noiseConfig, Chunk chunk) {
-        ChunkPos chunkPos = chunk.getPos();
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                int worldX = chunkPos.getStartX() + x;
-                int worldZ = chunkPos.getStartZ() + z;
-                int worldY = 64; // Example ground height
-
-                // Set ground blocks to prevent players from falling infinitely
-                chunk.setBlockState(new BlockPos(worldX, worldY, worldZ), Blocks.GRASS_BLOCK.getDefaultState(), false);
-                chunk.setBlockState(new BlockPos(worldX, worldY - 1, worldZ), Blocks.DIRT.getDefaultState(), false);
-                chunk.setBlockState(new BlockPos(worldX, worldY - 2, worldZ), Blocks.STONE.getDefaultState(), false);
-            }
-        }
     }
 
     @Override
