@@ -1,21 +1,22 @@
 package net.entropyentertainment.nathan;
 
-import net.entropyentertainment.nathan.init.ModEssentials;
-import net.fabricmc.api.ModInitializer;
+import nl.nullptrexc.modcore.ModCore;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-public class Nathan extends ModEssentials implements ModInitializer {
+public class Nathan extends ModCore {
 
     public Nathan() {
         MOD_ID = "nathan";
-        LOGGER.info("Test meow test");
+        LOGGER = LogManager.getLogger(MOD_ID);
     }
 
-    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
-
-    @Override
     public void onInitialize() {
-        LOGGER.info("Test succes");
+        LOGGER.info("Started initializing {}", MOD_ID);
+
+        /*
+        TODO: Init code goes here
+         */
+
+        LOGGER.info("Finished initializing {}", MOD_ID);
     }
 }
