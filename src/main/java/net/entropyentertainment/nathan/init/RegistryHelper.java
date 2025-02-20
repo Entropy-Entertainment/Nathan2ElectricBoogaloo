@@ -8,14 +8,20 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Function;
 
 /**
  * A helper class for getting Item initialisation and registrykeys <br />
  *
  * @author &lt;null/&gt;
  */
-public class InitializerHelper {
+public class RegistryHelper {
+    public static Logger LOGGER = LogManager.getLogger(RegistryHelper.class);
+
     /**
      * Creates a new {@link net.minecraft.registry.RegistryKey} for the given {@link net.minecraft.item.Item}'s itemName
      *
@@ -24,11 +30,12 @@ public class InitializerHelper {
      * @return A {@link net.minecraft.registry.RegistryKey} of your MOD_ID and itemName of the item
      */
     public static <T extends ModEssentials> RegistryKey<Item> getItemRegistryKey(String itemName) {
-        return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(T.MOD_ID, itemName));
+        return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(T.MOD_ID, itemName.toLowerCase()));
     }
 
     /**
-     * Registers the given item to the Minecraft {@link net.minecraft.registry.Registry}
+     * Registers the given item to the Minecraft {@link net.minecraft.registry.Registry} <br />
+     * I do recomend using {@link RegistryHelper#registerAndCreateItem(Function, T.Settings, RegistryKey)} instead!
      *
      * @param item        The item to register to the {@link net.minecraft.registry.Registry}
      * @param registryKey The registry key of the Item you're trying to register
@@ -37,6 +44,35 @@ public class InitializerHelper {
      */
     public static <T extends Item> T registerItem(T item, @NotNull RegistryKey<Item> registryKey) {
         return Registry.register(Registries.ITEM, registryKey.getValue(), item);
+    }
+
+    /**
+     * Creates and registers an {@link net.minecraft.item.Item} to the Minecraft {@link net.minecraft.registry.Registry}. <br />
+     *
+     * @param itemFactory A {@code Function<T.Settings, T>} where {@link net.minecraft.item.Item} is the class you wish to register. Example: {@code Item::new}.
+     * @param settings    The {@link T.Settings} used to configure the item.
+     * @param registryKey The {@link net.minecraft.registry.RegistryKey} of the {@link net.minecraft.item.Item} you are trying to register.
+     * @param <T>         The {@link net.minecraft.item.Item} class to return and use in the method parameters, this should extend {@link net.minecraft.item.Item}.
+     * @return The newly registered {@link net.minecraft.item.Item}.
+     */
+    public static <T extends Item> T registerAndCreateItem(@NotNull Function<T.Settings, T> itemFactory, @NotNull T.Settings settings, @NotNull RegistryKey<Item> registryKey) {
+        return Registry.register(Registries.ITEM, registryKey.getValue(), itemFactory.apply(settings));
+    }
+
+    /**
+     * Creates and registers an {@link net.minecraft.item.Item} to the Minecraft {@link net.minecraft.registry.Registry}, using default settings. <br />
+     * <p>
+     * This method is an overload of {@link RegistryHelper#registerAndCreateItem(Function, Item.Settings, RegistryKey)}
+     * and provides a default {@link net.minecraft.item.Item.Settings} instance. <br />
+     * </p>
+     *
+     * @param itemFactory A {@code Function<T.Settings, T>} where {@link net.minecraft.item.Item} is the class you wish to register. Example: {@code Item::new}.
+     * @param registryKey The {@link net.minecraft.registry.RegistryKey} of the {@link net.minecraft.item.Item} you are trying to register.
+     * @param <T>         The {@link net.minecraft.item.Item} class to return and use in the method parameters, this should extend {@link net.minecraft.item.Item}.
+     * @return The newly registered {@link net.minecraft.item.Item}.
+     */
+    public static <T extends Item> T registerAndCreateItem(@NotNull Function<T.Settings, T> itemFactory, @NotNull RegistryKey<Item> registryKey) {
+        return registerAndCreateItem(itemFactory, new T.Settings().registryKey(registryKey), registryKey);
     }
 
     /**
@@ -74,3 +110,4 @@ public class InitializerHelper {
         }
     }
 }
+

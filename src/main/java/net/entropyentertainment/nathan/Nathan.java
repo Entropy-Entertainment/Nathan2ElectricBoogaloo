@@ -16,6 +16,12 @@ public class Nathan extends ModEssentials implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("Test succes");
+        LOGGER.info("Started initializing {}", MOD_ID);
+
+        /*
+        TODO: Init code goes here
+         */
+
+        LOGGER.info("Finished initializing {}", MOD_ID);
     }
 }
