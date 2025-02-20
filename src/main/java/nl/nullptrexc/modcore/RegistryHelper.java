@@ -1,4 +1,4 @@
-package net.entropyentertainment.nathan.init;
+package nl.nullptrexc.modcore;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;
@@ -26,10 +26,10 @@ public class RegistryHelper {
      * Creates a new {@link net.minecraft.registry.RegistryKey} for the given {@link net.minecraft.item.Item}'s itemName
      *
      * @param itemName The itemName of the Item you need the registrykey for
-     * @param <T>      Your main class which extends {@link ModEssentials} (it should grab this automatically!) add it like &lt;ClassName&gt;getItemRegistryKey(itemName)
+     * @param <T>      Your main class which extends {@link ModCore} (it should grab this automatically!) add it like &lt;ClassName&gt;getItemRegistryKey(itemName)
      * @return A {@link net.minecraft.registry.RegistryKey} of your MOD_ID and itemName of the item
      */
-    public static <T extends ModEssentials> RegistryKey<Item> getItemRegistryKey(String itemName) {
+    public static <T extends ModCore> RegistryKey<Item> getItemRegistryKey(String itemName) {
         return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(T.MOD_ID, itemName.toLowerCase()));
     }
 
@@ -79,10 +79,10 @@ public class RegistryHelper {
      * Creates a registry key for an {@link net.minecraft.item.ItemGroup} using the given itemGroupName
      *
      * @param itemGroupName the itemName of the group you're trying to make an {@link net.minecraft.item.ItemGroup} of
-     * @param <T>           Your main class which extends {@link ModEssentials} (it should grab this automatically!) add it like &lt;ClassName&gt;getItemRegistryKey(itemName)
+     * @param <T>           Your main class which extends {@link ModCore} (it should grab this automatically!) add it like &lt;ClassName&gt;getItemRegistryKey(itemName)
      * @return The {@link net.minecraft.registry.RegistryKey} of your MOD_ID and itemName of the ItemGroup
      */
-    public static <T extends ModEssentials> RegistryKey<ItemGroup> getGroupRegistryKey(String itemGroupName) {
+    public static <T extends ModCore> RegistryKey<ItemGroup> getGroupRegistryKey(String itemGroupName) {
         return RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(T.MOD_ID, itemGroupName));
     }
 
