@@ -1,6 +1,6 @@
 package net.entropyentertainment.nathan;
 
-import generation.DungeonChunkGenerator;
+import net.entropyentertainment.nathan.world.DungeonChunkGenerator;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
