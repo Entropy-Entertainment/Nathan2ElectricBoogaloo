@@ -1,5 +1,6 @@
 package net.entropyentertainment.nathan;
 
+import net.entropyentertainment.nathan.init.items.ModItems;
 import nl.nullptrexc.modcore.ModCore;
 import org.apache.logging.log4j.LogManager;
 
@@ -16,6 +17,7 @@ public class Nathan extends ModCore {
         /*
         TODO: Init code goes here
          */
+        ModItems.Init();
 
         LOGGER.info("Finished initializing {}", MOD_ID);
     }

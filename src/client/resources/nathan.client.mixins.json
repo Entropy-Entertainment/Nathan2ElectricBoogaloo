@@ -4,6 +4,7 @@
   "package": "net.entropyentertainment.nathan.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "HeldItemRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

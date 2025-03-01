@@ -1,0 +1,6 @@
+{
+  "parent": "nathan:item/drill",
+  "textures": {
+    "layer0": "nathan:item/netherite_drill"
+  }
+}

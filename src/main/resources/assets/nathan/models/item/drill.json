@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:item/crossbow",
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        -90,
+        90,
+        -45
+      ],
+      "translation": [
+        0,
+        -2,
+        -4.5
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -90,
+        90,
+        43
+      ],
+      "translation": [
+        0,
+        -2,
+        -4.5
+      ]
+    }
+  }
+}

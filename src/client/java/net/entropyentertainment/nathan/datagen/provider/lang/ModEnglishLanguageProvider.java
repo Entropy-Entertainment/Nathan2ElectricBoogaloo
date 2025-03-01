@@ -1,14 +1,15 @@
 package net.entropyentertainment.nathan.datagen.provider.lang;
 
+import net.entropyentertainment.nathan.init.items.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
-public class NathanEnglishLanguageProvider extends AbstractLanguageProvider {
+public class ModEnglishLanguageProvider extends AbstractLanguageProvider {
     private static final String langCode = "en_us";
 
-    public NathanEnglishLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+    public ModEnglishLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(langCode, dataOutput, registryLookup);
     }
 
@@ -21,5 +22,7 @@ public class NathanEnglishLanguageProvider extends AbstractLanguageProvider {
     @Override
     public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder) {
         getExistingLangFile(translationBuilder);
+
+        translationBuilder.add(ModItems.NETHERITE_DRILL, "Netherite Drill");
     }
 }

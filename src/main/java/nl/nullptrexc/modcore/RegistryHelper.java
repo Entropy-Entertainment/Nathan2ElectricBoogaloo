@@ -1,12 +1,15 @@
 package nl.nullptrexc.modcore;
 
+import net.entropyentertainment.nathan.Nathan;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,6 +34,17 @@ public class RegistryHelper {
      */
     public static <T extends ModCore> RegistryKey<Item> getItemRegistryKey(String itemName) {
         return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(T.MOD_ID, itemName.toLowerCase()));
+    }
+
+    /**
+     * Returns a BlockTag of the given ID for use in your own BlockTag class
+     *
+     * @param blockTagID The name of the tag you wish to register
+     * @param <T>        Your main class which extends {@link ModCore} (it should grab this automatically!) add it like &lt;ClassName&gt;getItemRegistryKey(itemName)
+     * @return A {@link net.minecraft.registry.tag.TagKey TagKey&lt;Block&gt;} of the given blockTagID to use in your {@link net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider BlockTagProvider}
+     */
+    public static <T extends ModCore> TagKey<Block> getBlockTagKey(String blockTagID) {
+        return TagKey.of(RegistryKeys.BLOCK, Identifier.of(Nathan.MOD_ID, blockTagID));
     }
 
     /**
@@ -73,6 +87,10 @@ public class RegistryHelper {
      */
     public static <T extends Item> T registerAndCreateItem(@NotNull Function<T.Settings, T> itemFactory, @NotNull RegistryKey<Item> registryKey) {
         return registerAndCreateItem(itemFactory, new T.Settings().registryKey(registryKey), registryKey);
+    }
+
+    public static <T extends Item> T registerAndCreateItem(@NotNull Function<Item.Settings, T> itemFactory, @NotNull T.Settings settings, @NotNull String item) {
+        return registerAndCreateItem(itemFactory, settings, getItemRegistryKey(item));
     }
 
     /**

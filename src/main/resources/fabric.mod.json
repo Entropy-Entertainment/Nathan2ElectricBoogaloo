@@ -4,7 +4,11 @@
   "version": "${version}",
   "name": "Nathan",
   "description": "",
-  "authors": ["Entropire", "nxbi", "<null/>"],
+  "authors": [
+    "Entropire",
+    "nxbi",
+    "<null/>"
+  ],
   "contact": {},
   "license": "All-Rights-Reserved",
   "icon": "assets/nathan/icon.png",
@@ -17,7 +21,7 @@
       "net.entropyentertainment.nathan.Nathan"
     ],
     "fabric-datagen": [
-      "net.entropyentertainment.nathan.datagen.NathanDataGenerator"
+      "net.entropyentertainment.nathan.datagen.ModDataGenerator"
     ]
   },
   "mixins": [
