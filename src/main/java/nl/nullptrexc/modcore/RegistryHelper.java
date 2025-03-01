@@ -93,6 +93,10 @@ public class RegistryHelper {
         return registerAndCreateItem(itemFactory, settings, getItemRegistryKey(item));
     }
 
+    public static <T extends Item> T registerAndCreateItem(@NotNull Function<Item.Settings, T> itemFactory, @NotNull String item) {
+        return registerAndCreateItem(itemFactory, getItemRegistryKey(item));
+    }
+
     /**
      * Creates a registry key for an {@link net.minecraft.item.ItemGroup} using the given itemGroupName
      *

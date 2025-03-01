@@ -1,11 +1,10 @@
 package net.entropyentertainment.nathan.datagen.provider;
 
-import net.entropyentertainment.nathan.init.items.ModItems;
+import net.entropyentertainment.nathan.init.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.recipe.RecipeExporter;
 import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryWrapper;
 
@@ -28,21 +27,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         return new RecipeGenerator(wrapperLookup, recipeExporter) {
             @Override
             public void generate() {
-                createShaped(RecipeCategory.TOOLS, ModItems.NETHERITE_DRILL)
-                        .pattern("## ")
-                        .pattern("#%-")
-                        .pattern(" - ")
-                        .input('#', Items.NETHERITE_INGOT)
-                        .input('%', Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE)
-                        .input('-', Items.STICK)
-                        .criterion(hasItem(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), conditionsFromItem(ModItems.NETHERITE_DRILL))
-                        .offerTo(recipeExporter);
+                offerNetheriteUpgradeRecipe(ModItems.DIAMOND_DRILL, RecipeCategory.TOOLS, ModItems.NETHERITE_DRILL);
             }
         };
     }
 
     @Override
     public String getName() {
-        return "NathanRecipeProvider";
+        return "Recipe Provider";
     }
 }

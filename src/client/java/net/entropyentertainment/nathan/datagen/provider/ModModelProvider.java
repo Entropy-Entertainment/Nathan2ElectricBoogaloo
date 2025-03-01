@@ -1,7 +1,7 @@
 package net.entropyentertainment.nathan.datagen.provider;
 
 import net.entropyentertainment.nathan.client.data.ModModels;
-import net.entropyentertainment.nathan.init.items.ModItems;
+import net.entropyentertainment.nathan.init.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.BlockStateModelGenerator;
@@ -29,6 +29,7 @@ public class ModModelProvider extends FabricModelProvider {
      */
     @Override
     public void generateItemModels(ItemModelGenerator modelGen) {
+        modelGen.register(ModItems.DIAMOND_DRILL, ModModels.DRILL);
         modelGen.register(ModItems.NETHERITE_DRILL, ModModels.DRILL);
     }
 }

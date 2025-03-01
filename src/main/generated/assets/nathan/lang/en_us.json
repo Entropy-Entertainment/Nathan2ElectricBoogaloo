@@ -1,3 +1,6 @@
 {
-  "item.nathan.netherite_drill": "Netherite Drill"
+  "item.nathan.diamond_drill": "Diamond Drill",
+  "item.nathan.netherite_drill": "Netherite Drill",
+  "itemGroup.nathan": "Dungeons",
+  "tag.item.nathan.drills": "Drills"
 }

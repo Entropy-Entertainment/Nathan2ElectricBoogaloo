@@ -1,7 +1,7 @@
 package net.entropyentertainment.nathan.datagen.provider.tagproviders;
 
 import net.entropyentertainment.nathan.common.tags.ModItemTags;
-import net.entropyentertainment.nathan.init.items.ModItems;
+import net.entropyentertainment.nathan.init.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.item.Item;
@@ -19,6 +19,7 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         getOrCreateTagBuilder(ModItemTags.DRILLS)
+                .add(ModItems.DIAMOND_DRILL)
                 .add(ModItems.NETHERITE_DRILL);
 
         getOrCreateTagBuilder(ItemTags.MINING_ENCHANTABLE)

@@ -1,12 +1,13 @@
 package net.entropyentertainment.nathan.mixin.client;
 
+import net.entropyentertainment.nathan.Nathan;
 import net.entropyentertainment.nathan.common.tags.ModItemTags;
-import net.entropyentertainment.nathan.init.items.ModItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
+import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -37,6 +38,7 @@ public abstract class HeldItemRendererMixin {
         if (!player.isUsingSpyglass()) {
             boolean isMainHand = hand == Hand.MAIN_HAND;
 
+
             Arm arm = isMainHand ? player.getMainArm() : player.getMainArm().getOpposite();
             matrices.push();
 
@@ -51,19 +53,18 @@ public abstract class HeldItemRendererMixin {
                 if (isMainHand) {
                     matrices.translate((float) directionMultiplier * -0.641864F, 0.0F, 0.0F); // Location in front of player
                     matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float) directionMultiplier * 10.0F)); //Left/Right rotation modifier
+                    this.renderItem(
+                            player,
+                            item,
+                            isRightArm ? ModelTransformationMode.FIRST_PERSON_RIGHT_HAND : ModelTransformationMode.FIRST_PERSON_LEFT_HAND,
+                            !isRightArm,
+                            matrices,
+                            vertexConsumers,
+                            light
+                    );
                 }
-                this.renderItem(
-                        player,
-                        item,
-                        isRightArm ? ModelTransformationMode.FIRST_PERSON_RIGHT_HAND : ModelTransformationMode.FIRST_PERSON_LEFT_HAND,
-                        !isRightArm,
-                        matrices,
-                        vertexConsumers,
-                        light
-                );
                 ci.cancel();
-            }
-            if (player.getMainHandStack().isIn(ModItemTags.DRILLS)) {
+            } else if (!isMainHand && player.getMainHandStack().isIn(ModItemTags.DRILLS)) {
                 ci.cancel();
             }
         }

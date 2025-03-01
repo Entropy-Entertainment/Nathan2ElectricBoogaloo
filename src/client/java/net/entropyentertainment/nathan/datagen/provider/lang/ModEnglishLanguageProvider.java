@@ -1,6 +1,8 @@
 package net.entropyentertainment.nathan.datagen.provider.lang;
 
-import net.entropyentertainment.nathan.init.items.ModItems;
+import net.entropyentertainment.nathan.common.tags.ModItemTags;
+import net.entropyentertainment.nathan.init.ModItemGroups;
+import net.entropyentertainment.nathan.init.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.registry.RegistryWrapper;
 
@@ -23,6 +25,14 @@ public class ModEnglishLanguageProvider extends AbstractLanguageProvider {
     public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder) {
         getExistingLangFile(translationBuilder);
 
+        // Items
         translationBuilder.add(ModItems.NETHERITE_DRILL, "Netherite Drill");
+        translationBuilder.add(ModItems.DIAMOND_DRILL, "Diamond Drill");
+
+        // ItemGroups (this is the little inventory tab in creative mode)
+        translationBuilder.add(ModItemGroups.DUNGEON_GROUP_KEY, "Dungeons");
+
+        // ItemTags (this is mostly for JEI and alternatives support)
+        translationBuilder.add(ModItemTags.DRILLS, "Drills");
     }
 }
