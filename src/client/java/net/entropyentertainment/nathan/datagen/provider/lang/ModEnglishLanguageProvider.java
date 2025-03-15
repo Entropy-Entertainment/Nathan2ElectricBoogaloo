@@ -1,6 +1,7 @@
 package net.entropyentertainment.nathan.datagen.provider.lang;
 
 import net.entropyentertainment.nathan.common.tags.ModItemTags;
+import net.entropyentertainment.nathan.init.ModBlocks;
 import net.entropyentertainment.nathan.init.ModItemGroups;
 import net.entropyentertainment.nathan.init.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -28,6 +29,11 @@ public class ModEnglishLanguageProvider extends AbstractLanguageProvider {
         // Items
         translationBuilder.add(ModItems.NETHERITE_DRILL, "Netherite Drill");
         translationBuilder.add(ModItems.DIAMOND_DRILL, "Diamond Drill");
+        translationBuilder.add(ModItems.RAW_RHODONITE_ORE, "Raw Rhodonite Ore");
+
+        // Blocks
+        translationBuilder.add(ModBlocks.RHODONITE_ORE.asItem(), "Rhodonite Ore");
+        translationBuilder.add(ModBlocks.DEEPSLATE_RHODONITE_ORE.asItem(), "Deepslate Rhodonite Ore");
 
         // ItemGroups (this is the little inventory tab in creative mode)
         translationBuilder.add(ModItemGroups.DUNGEON_GROUP_KEY, "Dungeons");

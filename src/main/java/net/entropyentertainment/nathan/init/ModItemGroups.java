@@ -17,5 +17,14 @@ public class ModItemGroups {
     );
 
     public static void init() {
+        RegistryHelper.registerToItemGroup(
+                DUNGEON_GROUP_KEY, // The ItemGroup to modify
+                /* Items to add below here */
+                ModItems.NETHERITE_DRILL,
+                ModItems.DIAMOND_DRILL,
+                ModBlocks.RHODONITE_ORE.asItem(),
+                ModBlocks.DEEPSLATE_RHODONITE_ORE.asItem(),
+                ModItems.RAW_RHODONITE_ORE
+        );
     }
 }

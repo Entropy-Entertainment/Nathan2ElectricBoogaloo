@@ -1,7 +1,9 @@
 package net.entropyentertainment.nathan;
 
+import net.entropyentertainment.nathan.init.ModBlocks;
 import net.entropyentertainment.nathan.init.ModItemGroups;
 import net.entropyentertainment.nathan.init.ModItems;
+import net.entropyentertainment.nathan.init.ModPlacedFeatures;
 import nl.nullptrexc.modcore.ModCore;
 import org.apache.logging.log4j.LogManager;
 
@@ -20,6 +22,8 @@ public class Nathan extends ModCore {
          */
         ModItemGroups.init();
         ModItems.init();
+        ModBlocks.init();
+        ModPlacedFeatures.init();
 
         LOGGER.info("Finished initializing {}", MOD_ID);
     }

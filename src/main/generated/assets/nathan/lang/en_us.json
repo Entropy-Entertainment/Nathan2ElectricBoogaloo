@@ -1,6 +1,9 @@
 {
+  "item.nathan.deepslate_rhodonite_ore": "Deepslate Rhodonite Ore",
   "item.nathan.diamond_drill": "Diamond Drill",
   "item.nathan.netherite_drill": "Netherite Drill",
+  "item.nathan.raw_rhodonite_ore": "Raw Rhodonite Ore",
+  "item.nathan.rhodonite_ore": "Rhodonite Ore",
   "itemGroup.nathan": "Dungeons",
   "tag.item.nathan.drills": "Drills"
 }

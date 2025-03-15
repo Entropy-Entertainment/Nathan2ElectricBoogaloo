@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/crossbow",
+  "parent": "nathan:item/frontally_held_item",
   "display": {
     "thirdperson_righthand": {
       "rotation": [

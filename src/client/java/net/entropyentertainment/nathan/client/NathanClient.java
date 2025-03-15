@@ -6,5 +6,6 @@ public class NathanClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+
     }
 }

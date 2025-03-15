@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 
 public class ModItemTags {
     public static final TagKey<Item> DRILLS = of("drills");
-    public static final TagKey<Item> MINING_ENCHANTABLE = of("enchantable/mining");
+    public static final TagKey<Item> FRONTALLY_HELD = of("frontally_held");
 
     private static TagKey<Item> of(String ID) {
         return TagKey.of(RegistryKeys.ITEM, Identifier.of(Nathan.MOD_ID, ID));

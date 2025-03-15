@@ -30,5 +30,8 @@ public class ModItemTagProvider extends FabricTagProvider<Item> {
 
         getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE)
                 .addTag(ModItemTags.DRILLS);
+
+        getOrCreateTagBuilder(ModItemTags.FRONTALLY_HELD)
+                .addTag(ModItemTags.DRILLS);
     }
 }

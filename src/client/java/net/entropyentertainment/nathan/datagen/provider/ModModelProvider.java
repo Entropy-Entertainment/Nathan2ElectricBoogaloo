@@ -1,6 +1,7 @@
 package net.entropyentertainment.nathan.datagen.provider;
 
 import net.entropyentertainment.nathan.client.data.ModModels;
+import net.entropyentertainment.nathan.init.ModBlocks;
 import net.entropyentertainment.nathan.init.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -19,7 +20,8 @@ public class ModModelProvider extends FabricModelProvider {
      */
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockstateModelGen) {
-
+        blockstateModelGen.registerSimpleCubeAll(ModBlocks.RHODONITE_ORE);
+        blockstateModelGen.registerSimpleCubeAll(ModBlocks.DEEPSLATE_RHODONITE_ORE);
     }
 
     /**
@@ -31,5 +33,6 @@ public class ModModelProvider extends FabricModelProvider {
     public void generateItemModels(ItemModelGenerator modelGen) {
         modelGen.register(ModItems.DIAMOND_DRILL, ModModels.DRILL);
         modelGen.register(ModItems.NETHERITE_DRILL, ModModels.DRILL);
+        modelGen.register(ModItems.RAW_RHODONITE_ORE, ModModels.GENERATED);
     }
 }

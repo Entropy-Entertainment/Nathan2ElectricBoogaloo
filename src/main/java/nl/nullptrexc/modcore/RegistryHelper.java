@@ -1,8 +1,9 @@
 package nl.nullptrexc.modcore;
 
-import net.entropyentertainment.nathan.Nathan;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
@@ -11,125 +12,204 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
 /**
- * A helper class for getting Item initialisation and registrykeys <br />
+ * A helper class for creating registry keys and registering blocks, items, and item groups.
+ * <p>
+ * This utility leverages the mod identifier defined in your main mod class (extending {@link ModCore})
+ * via its {@code MOD_ID} field.
+ * </p>
+ * <p>
+ * Usage examples:
+ * <ul>
+ *   <li>Creating a registry key for an item: <code>RegistryHelper.getItemRegistryKey("my_item")</code></li>
+ *   <li>Registering a block: <code>RegistryHelper.registerBlock(myBlock, getBlockRegistryKey("my_block"))</code></li>
+ * </ul>
+ * </p>
  *
  * @author &lt;null/&gt;
  */
 public class RegistryHelper {
-    public static Logger LOGGER = LogManager.getLogger(RegistryHelper.class);
+
+    // -------------------------------------------------------------------------
+    // Registry Key Creation Methods
+    // -------------------------------------------------------------------------
 
     /**
-     * Creates a new {@link net.minecraft.registry.RegistryKey} for the given {@link net.minecraft.item.Item}'s itemName
+     * Creates a registry key for an {@link Item} using the provided item name.
      *
-     * @param itemName The itemName of the Item you need the registrykey for
-     * @param <T>      Your main class which extends {@link ModCore} (it should grab this automatically!) add it like &lt;ClassName&gt;getItemRegistryKey(itemName)
-     * @return A {@link net.minecraft.registry.RegistryKey} of your MOD_ID and itemName of the item
+     * @param itemName the name of the item
+     * @param <T>      the mod core type that provides {@code MOD_ID}
+     * @return a {@link RegistryKey} for the item under the mod's identifier
      */
-    public static <T extends ModCore> RegistryKey<Item> getItemRegistryKey(String itemName) {
+    public static <T extends ModCore> RegistryKey<Item> getItemRegistryKey(@NotNull String itemName) {
         return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(T.MOD_ID, itemName.toLowerCase()));
     }
 
     /**
-     * Returns a BlockTag of the given ID for use in your own BlockTag class
+     * Creates a tag key for a {@link Block} using the provided tag identifier.
      *
-     * @param blockTagID The name of the tag you wish to register
-     * @param <T>        Your main class which extends {@link ModCore} (it should grab this automatically!) add it like &lt;ClassName&gt;getItemRegistryKey(itemName)
-     * @return A {@link net.minecraft.registry.tag.TagKey TagKey&lt;Block&gt;} of the given blockTagID to use in your {@link net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider BlockTagProvider}
+     * @param blockTagID the identifier for the block tag
+     * @param <T>        the mod core type that provides {@code MOD_ID}
+     * @return a {@link TagKey} for the block tag under the mod's identifier
      */
-    public static <T extends ModCore> TagKey<Block> getBlockTagKey(String blockTagID) {
-        return TagKey.of(RegistryKeys.BLOCK, Identifier.of(Nathan.MOD_ID, blockTagID));
+    public static <T extends ModCore> TagKey<Block> getBlockTagKey(@NotNull String blockTagID) {
+        return TagKey.of(RegistryKeys.BLOCK, Identifier.of(T.MOD_ID, blockTagID));
     }
 
     /**
-     * Registers the given item to the Minecraft {@link net.minecraft.registry.Registry} <br />
-     * I do recomend using {@link RegistryHelper#registerAndCreateItem(Function, T.Settings, RegistryKey)} instead!
+     * Creates a registry key for a {@link Block} using the provided block name.
      *
-     * @param item        The item to register to the {@link net.minecraft.registry.Registry}
-     * @param registryKey The registry key of the Item you're trying to register
-     * @param <T>         The Item class to return and use for item in the method parameters, this should extend {@link net.minecraft.item.Item}
-     * @return The newly registered {@link net.minecraft.item.Item}
+     * @param blockName the name of the block
+     * @param <T>       the mod core type that provides {@code MOD_ID}
+     * @return a {@link RegistryKey} for the block under the mod's identifier
      */
-    public static <T extends Item> T registerItem(T item, @NotNull RegistryKey<Item> registryKey) {
+    public static <T extends ModCore> RegistryKey<Block> getBlockRegistryKey(@NotNull String blockName) {
+        return RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(T.MOD_ID, blockName));
+    }
+
+    /**
+     * Creates a registry key for an {@link ItemGroup} using the provided group name.
+     *
+     * @param itemGroupName the name of the item group
+     * @param <T>           the mod core type that provides {@code MOD_ID}
+     * @return a {@link RegistryKey} for the item group under the mod's identifier
+     */
+    public static <T extends ModCore> RegistryKey<ItemGroup> getGroupRegistryKey(@NotNull String itemGroupName) {
+        return RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(T.MOD_ID, itemGroupName));
+    }
+
+    // -------------------------------------------------------------------------
+    // Item Registration Methods
+    // -------------------------------------------------------------------------
+
+    /**
+     * Registers the given {@link Item} with the specified registry key.
+     *
+     * @param item        the item to register
+     * @param registryKey the registry key for the item
+     * @param <T>         the type of the item
+     * @return the registered item
+     */
+    public static <T extends Item> T registerItem(@NotNull T item, @NotNull RegistryKey<Item> registryKey) {
         return Registry.register(Registries.ITEM, registryKey.getValue(), item);
     }
 
     /**
-     * Creates and registers an {@link net.minecraft.item.Item} to the Minecraft {@link net.minecraft.registry.Registry}. <br />
+     * Creates and registers an {@link Item} using the provided factory function and settings.
      *
-     * @param itemFactory A {@code Function<T.Settings, T>} where {@link net.minecraft.item.Item} is the class you wish to register. Example: {@code Item::new}.
-     * @param settings    The {@link T.Settings} used to configure the item.
-     * @param registryKey The {@link net.minecraft.registry.RegistryKey} of the {@link net.minecraft.item.Item} you are trying to register.
-     * @param <T>         The {@link net.minecraft.item.Item} class to return and use in the method parameters, this should extend {@link net.minecraft.item.Item}.
-     * @return The newly registered {@link net.minecraft.item.Item}.
+     * @param itemFactory a function that creates an item from the given settings
+     * @param settings    the settings for the item
+     * @param registryKey the registry key for the item
+     * @param <T>         the type of the item
+     * @return the newly created and registered item
      */
-    public static <T extends Item> T registerAndCreateItem(@NotNull Function<T.Settings, T> itemFactory, @NotNull T.Settings settings, @NotNull RegistryKey<Item> registryKey) {
+    public static <T extends Item> T registerAndCreateItem(@NotNull Function<T.Settings, T> itemFactory, @NotNull Item.Settings settings, @NotNull RegistryKey<Item> registryKey) {
         return Registry.register(Registries.ITEM, registryKey.getValue(), itemFactory.apply(settings));
     }
 
     /**
-     * Creates and registers an {@link net.minecraft.item.Item} to the Minecraft {@link net.minecraft.registry.Registry}, using default settings. <br />
+     * Creates and registers an {@link Item} using the provided factory function and default settings.
      * <p>
-     * This method is an overload of {@link RegistryHelper#registerAndCreateItem(Function, Item.Settings, RegistryKey)}
-     * and provides a default {@link net.minecraft.item.Item.Settings} instance. <br />
+     * This overload creates a new {@link Item.Settings} instance, applies the registry key to it,
+     * and registers the item.
      * </p>
      *
-     * @param itemFactory A {@code Function<T.Settings, T>} where {@link net.minecraft.item.Item} is the class you wish to register. Example: {@code Item::new}.
-     * @param registryKey The {@link net.minecraft.registry.RegistryKey} of the {@link net.minecraft.item.Item} you are trying to register.
-     * @param <T>         The {@link net.minecraft.item.Item} class to return and use in the method parameters, this should extend {@link net.minecraft.item.Item}.
-     * @return The newly registered {@link net.minecraft.item.Item}.
+     * @param itemFactory a function that creates an item from settings
+     * @param registryKey the registry key for the item
+     * @param <T>         the type of the item
+     * @return the newly created and registered item
      */
     public static <T extends Item> T registerAndCreateItem(@NotNull Function<T.Settings, T> itemFactory, @NotNull RegistryKey<Item> registryKey) {
-        return registerAndCreateItem(itemFactory, new T.Settings().registryKey(registryKey), registryKey);
-    }
-
-    public static <T extends Item> T registerAndCreateItem(@NotNull Function<Item.Settings, T> itemFactory, @NotNull T.Settings settings, @NotNull String item) {
-        return registerAndCreateItem(itemFactory, settings, getItemRegistryKey(item));
-    }
-
-    public static <T extends Item> T registerAndCreateItem(@NotNull Function<Item.Settings, T> itemFactory, @NotNull String item) {
-        return registerAndCreateItem(itemFactory, getItemRegistryKey(item));
+        return registerAndCreateItem(itemFactory, new Item.Settings().registryKey(registryKey), registryKey);
     }
 
     /**
-     * Creates a registry key for an {@link net.minecraft.item.ItemGroup} using the given itemGroupName
+     * Creates and registers an {@link Item} using the provided factory function, settings, and item name.
+     * <p>
+     * The item name is used to generate the registry key.
+     * </p>
      *
-     * @param itemGroupName the itemName of the group you're trying to make an {@link net.minecraft.item.ItemGroup} of
-     * @param <T>           Your main class which extends {@link ModCore} (it should grab this automatically!) add it like &lt;ClassName&gt;getItemRegistryKey(itemName)
-     * @return The {@link net.minecraft.registry.RegistryKey} of your MOD_ID and itemName of the ItemGroup
+     * @param itemFactory the factory function to create the item
+     * @param settings    the settings for the item
+     * @param itemName    the name of the item
+     * @param <T>         the type of the item
+     * @return the newly created and registered item
      */
-    public static <T extends ModCore> RegistryKey<ItemGroup> getGroupRegistryKey(String itemGroupName) {
-        return RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(T.MOD_ID, itemGroupName));
+    public static <T extends Item> T registerAndCreateItem(@NotNull Function<T.Settings, T> itemFactory, @NotNull Item.Settings settings, @NotNull String itemName) {
+        return registerAndCreateItem(itemFactory, settings, getItemRegistryKey(itemName));
     }
 
     /**
-     * Registers the given {@link net.minecraft.item.ItemGroup} to Minecraft's {@link net.minecraft.registry.Registry}
+     * Creates and registers an {@link Item} using the provided factory function and item name, with default settings.
+     * <p>
+     * The item name is used to generate the registry key.
+     * </p>
      *
-     * @param group       The {@link net.minecraft.item.ItemGroup} you wish to register to the {@link net.minecraft.registry.Registry}
-     * @param registryKey The {@link net.minecraft.registry.RegistryKey} of the ItemGroup you are trying to register
-     * @return A newly registered {@link net.minecraft.item.ItemGroup} of your RegistryKey
+     * @param itemFactory the factory function to create the item
+     * @param itemName    the name of the item
+     * @param <T>         the type of the item
+     * @return the newly created and registered item
      */
-    public static ItemGroup registerItemGroup(ItemGroup group, RegistryKey<ItemGroup> registryKey) {
+    public static <T extends Item> T registerAndCreateItem(@NotNull Function<T.Settings, T> itemFactory, @NotNull String itemName) {
+        return registerAndCreateItem(itemFactory, getItemRegistryKey(itemName));
+    }
+
+    // -------------------------------------------------------------------------
+    // Block Registration Methods
+    // -------------------------------------------------------------------------
+
+    /**
+     * Creates, registers, and optionally registers an associated {@link BlockItem} for a new {@link Block}.
+     * <p>
+     * This method uses the provided factory to create a block with the given settings and a generated registry key derived from the block name.
+     * If {@code registerAsItem} is true, it also creates and registers a corresponding {@link BlockItem} for the block using default item settings.
+     * </p>
+     *
+     * @param blockFactory a function that creates a block instance using block settings
+     * @param settings     the settings for the block; the generated registry key is applied to these settings
+     * @param blockName    the name of the block, used to generate registry keys for both the block and its item
+     * @param <T>          the type of the block
+     * @return the registered block instance
+     */
+    public static <T extends Block> T registerAndCreateBlock(String blockName, Function<T.Settings, T> blockFactory, AbstractBlock.Settings settings) {
+        RegistryKey<Block> blockRegistryKey = getBlockRegistryKey(blockName);
+        T registeredBlock = Registry.register(Registries.BLOCK, blockRegistryKey, blockFactory.apply(settings.registryKey(blockRegistryKey)));
+
+        RegistryKey<Item> itemRegistryKey = getItemRegistryKey(blockName);
+        Registry.register(Registries.ITEM, itemRegistryKey, new BlockItem(registeredBlock, new Item.Settings().registryKey(itemRegistryKey)));
+
+        return registeredBlock;
+    }
+
+    // -------------------------------------------------------------------------
+    // Item Group Registration Methods
+    // -------------------------------------------------------------------------
+
+    /**
+     * Registers the given {@link ItemGroup} with the specified registry key.
+     *
+     * @param group       the item group to register
+     * @param registryKey the registry key for the item group
+     * @return the registered item group
+     */
+    public static ItemGroup registerItemGroup(@NotNull ItemGroup group, @NotNull RegistryKey<ItemGroup> registryKey) {
         return Registry.register(Registries.ITEM_GROUP, registryKey, group);
     }
 
     /**
-     * A method to add multiple Items to an already existing ItemGroup
+     * Adds multiple {@link Item} instances to an existing {@link ItemGroup}.
      *
-     * @param itemGroupKey a {@link net.minecraft.registry.RegistryKey} of the {@link net.minecraft.item.ItemGroup} you want to add the Items to
-     * @param items        The {@link net.minecraft.item.Item}'s you want to register to an ItemGroup
+     * @param itemGroupKey the registry key of the item group to modify
+     * @param items        the items to add to the group
      */
-    public static void registerToItemGroup(RegistryKey<ItemGroup> itemGroupKey, Item... items) {
+    public static void registerToItemGroup(@NotNull RegistryKey<ItemGroup> itemGroupKey, Item... items) {
         for (Item item : items) {
             ItemGroupEvents.modifyEntriesEvent(itemGroupKey)
-                    .register((IG) -> IG.add(item));
+                    .register(entries -> entries.add(item));
         }
     }
 }
-

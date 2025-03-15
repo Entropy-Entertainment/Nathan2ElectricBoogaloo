@@ -1,0 +1,6 @@
+{
+  "parent": "nathan:item/frontally_held_item",
+  "textures": {
+    "layer0": "nathan:item/raw_rhodonite_ore"
+  }
+}
